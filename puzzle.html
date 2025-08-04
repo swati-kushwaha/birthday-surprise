@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page 3 - Puzzle Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f3e8ff;
+      flex-direction: column;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    #puzzle-container {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 2px;
+    }
+
+    .tile {
+      width: 100px;
+      height: 100px;
+      background-size: 300px 300px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+
+    .empty {
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+
+    #nextBtn {
+      margin-top: 30px;
+      display: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Complete the Puzzle to Continue!</h2>
+  <div id="puzzle-container"></div>
+  <button id="nextBtn" onclick="goToPage4()">Go to Page 4</button>
+
+  <script>
+    const imageUrl = "WhatsApp Image 2025-05-20 at 21.58.05_1054f42c.jpg"; // puzzle image you uploaded
+    const tiles = [];
+    let emptyIndex = 8;
+
+    const puzzleContainer = document.getElementById("puzzle-container");
+
+    function initPuzzle() {
+      const order = [...Array(9).keys()];
+      order.sort(() => Math.random() - 0.5); // shuffle
+      for (let i = 0; i < 9; i++) {
+        const div = document.createElement("div");
+        if (i !== 8) {
+          div.className = "tile";
+          const row = Math.floor(order[i] / 3);
+          const col = order[i] % 3;
+          div.style.backgroundImage = `url(${imageUrl})`;
+          div.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+          div.dataset.index = order[i];
+        } else {
+          div.className = "tile empty";
+        }
+        div.addEventListener("click", () => moveTile(i));
+        tiles.push(div);
+        puzzleContainer.appendChild(div);
+      }
+    }
+
+    function moveTile(index) {
+      const dx = [1, -1, 0, 0];
+      const dy = [0, 0, 1, -1];
+      const x = index % 3;
+      const y = Math.floor(index / 3);
+      const ex = emptyIndex % 3;
+      const ey = Math.floor(emptyIndex / 3);
+      if (Math.abs(x - ex) + Math.abs(y - ey) === 1) {
+        [tiles[index].style.backgroundImage, tiles[emptyIndex].style.backgroundImage] = [tiles[emptyIndex].style.backgroundImage, tiles[index].style.backgroundImage];
+        [tiles[index].style.backgroundPosition, tiles[emptyIndex].style.backgroundPosition] = [tiles[emptyIndex].style.backgroundPosition, tiles[index].style.backgroundPosition];
+        [tiles[index].dataset.index, tiles[emptyIndex].dataset.index] = [tiles[emptyIndex].dataset.index, tiles[index].dataset.index];
+        [tiles[index].className, tiles[emptyIndex].className] = [tiles[emptyIndex].className, tiles[index].className];
+        emptyIndex = index;
+        checkSolved();
+      }
+    }
+
+    function checkSolved() {
+      for (let i = 0; i < 8; i++) {
+        if (tiles[i].dataset.index != i) return;
+      }
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function goToPage4() {
+      window.location.href = "page4.html";
+    }
+
+    initPuzzle();
+  </script>
+  <a href="page4.html"><button>Go to Final Surprise</button></a>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!-- page4.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Surprise</title>
+  <style>
+    body {
+      background: #fff0f5;
+      text-align: center;
+      font-family: "Segoe UI", sans-serif;
+    }
+    #envelope {
+      width: 200px;
+      margin-top: 100px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    #cake, #message {
+      display: none;
+      margin-top: 30px;
+    }
+    #message {
+      font-size: 2em;
+      color: #ff69b4;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Click the envelope 🎁</h2>
+  <img id="envelope" src="envelope.png" alt="Envelope">
+
+  <img id="cake" src="cake.png" alt="Cake" width="200">
+  <div id="message">🎉 Happy Birthday Bhaiya! 🎂</div>
+
+  <audio id="bgMusic" src="birthday-music.mp3" loop></audio>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const cake = document.getElementById('cake');
+    const message = document.getElementById('message');
+    const music = document.getElementById('bgMusic');
+
+    envelope.addEventListener('click', () => {
+      envelope.src = "open-envelope.png"; // Replace with actual open envelope image
+      cake.style.display = 'block';
+      message.style.display = 'block';
+      music.play();
+    });
+  </script>
+</body>
+</html>
